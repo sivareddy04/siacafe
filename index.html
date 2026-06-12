@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡ SIA CAFE - Smart Automated Gastronomy Engine</title>
+    <style>
+        :root {
+            --primary-dark: #1e1b18;
+            --accent-brand: #ff7a00;
+            --bg-canvas: #0f0e0d;
+            --surface-card: #282421;
+            --text-main: #f5f0eb;
+            --text-muted: #a89f95;
+            --success-glow: #00ff66;
+            --pending-glow: #ffcc00;
+            --border-subtle: #3d3732;
+        }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-canvas);
+            color: var(--text-main);
+        }
+        header {
+            background: linear-gradient(135deg, #2e2216 0%, #17100a 100%);
+            border-bottom: 2px solid var(--accent-brand);
+            color: white;
+            text-align: center;
+            padding: 2.5rem 1rem;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        header h1 { margin: 0; font-size: 2.8rem; font-weight: 800; letter-spacing: -1px; color: #fff; text-shadow: 0 0 15px rgba(255,122,0,0.4); }
+        header p { margin: 8px 0 0; color: var(--text-muted); font-size: 1.1rem; }
+
+        .admin-toggle-btn {
+            position: absolute;
+            right: 20px;
+            top: 35px;
+            background: transparent;
+            color: var(--accent-brand);
+            border: 2px solid var(--accent-brand);
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .admin-toggle-btn:hover {
+            background: var(--accent-brand);
+            color: white;
+            box-shadow: 0 0 15px rgba(255,122,0,0.5);
+        }
+
+        .view-section { display: none; animation: fadeIn 0.4s ease; }
+        .active-view { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            display: grid;
+            grid-template-columns: 2.2fr 1fr;
+            gap: 2.5rem;
+        }
+        @media (max-width: 992px) {
+            .container { grid-template-columns: 1fr; }
+        }
+
+        .menu-section, .cart-section, .dashboard-card {
+            background: var(--surface-card);
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid var(--border-subtle);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        }
+
+        .menu-category { margin-bottom: 3rem; }
+        .menu-category h3 { 
+            font-size: 1.4rem; 
+            border-left: 4px solid var(--accent-brand); 
+            padding-left: 12px; 
+            margin-bottom: 1.5rem;
+            color: #fff;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .menu-card {
+            background: #1f1c1a;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #332d29;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        .menu-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-brand);
+        }
+        .menu-img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            background: #2a2521;
+        }
+        .menu-details {
+            padding: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: space-between;
+        }
+        .menu-details h4 { margin: 0 0 5px 0; font-size: 1.15rem; color: #fff; }
+        .menu-details p { margin: 0 0 15px 0; font-size: 0.9rem; color: var(--text-muted); min-height: 32px; }
+
+        .menu-action {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .item-price { font-size: 1.2rem; font-weight: 700; color: var(--accent-brand); }
+
+        .btn-add { 
+            background: linear-gradient(135deg, #ff9100 0%, #ff6200 100%); 
+            color: white; 
+            border: none; 
+            padding: 8px 16px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            transition: opacity 0.2s;
+        }
+        .btn-add:hover { opacity: 0.9; }
+
+        .cart-item { 
+            display: flex; 
+            justify-content: space-between; 
+            margin-bottom: 12px; 
+            padding-bottom: 12px;
+            border-bottom: 1px dashed #3d3732;
+        }
+        .cart-total { 
+            font-size: 1.4rem; 
+            font-weight: bold; 
+            border-top: 2px solid var(--accent-brand); 
+            padding-top: 15px; 
+            margin-top: 15px; 
+            display: flex; 
+            justify-content: space-between;
+            color: #fff;
+        }
+
+        input, select { 
+            width: 100%; 
+            padding: 12px; 
+            margin: 10px 0 18px 0; 
+            border: 1px solid var(--border-subtle); 
+            border-radius: 8px; 
+            font-size: 1rem; 
+            background-color: #1a1816;
+            color: #fff;
+            box-sizing: border-box;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--accent-brand);
+        }
+        .btn-order { 
+            background: linear-gradient(135deg, #25D366 0%, #1cbd58 100%); 
+            color: white; 
+            width: 100%; 
+            padding: 14px; 
+            border: none; 
+            border-radius: 8px; 
+            font-size: 1.15rem; 
+            font-weight: bold; 
+            cursor: pointer; 
+            margin-top: 1rem;
+            box-shadow: 0 5px 15px rgba(37,211,102,0.3);
+        }
+
+        .location-box { 
+            background: #1c1916; 
+            border: 1px dashed #5e4f43; 
+            padding: 12px; 
+            border-radius: 8px; 
+            margin: 12px 0; 
+            font-size: 0.95rem; 
+            color: #ff9100;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .login-box { max-width: 440px; margin: 6rem auto; padding: 3rem; border-radius: 20px; background: #1c1916; }
+        .login-box h3 { text-align: center; color: #fff; font-size: 1.6rem; margin-top: 0; margin-bottom: 2rem; }
+
+        .dashboard-container { max-width: 1300px; margin: 2rem auto; padding: 0 1.5rem; }
+        .metrics-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem; }
+        .metric-tile { background: #1c1916; padding: 1.5rem; border-radius: 12px; border-left: 4px solid var(--accent-brand); text-align: center; border-top: 1px solid var(--border-subtle); border-right: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); }
+        .metric-tile h4 { margin: 0; color: var(--text-muted); font-size: 0.95rem; text-transform: uppercase; letter-spacing: 1px; }
+        .metric-tile p { margin: 8px 0 0; font-size: 2rem; font-weight: 800; color: #fff; }
+
+        .filter-controls { display: flex; gap: 15px; margin-bottom: 1.5rem; align-items: center; background: #1c1916; padding: 15px 20px; border-radius: 10px; border: 1px solid var(--border-subtle); }
+        .filter-controls label { font-weight: bold; color: var(--text-main); }
+        .filter-controls select { width: auto; margin: 0; padding: 8px 16px; background: var(--surface-card); }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 0.5rem; background: #1c1916; border-radius: 12px; overflow: hidden; }
+        th, td { padding: 16px; text-align: left; border-bottom: 1px solid var(--border-subtle); font-size: 0.98rem; }
+        th { background-color: #2b2520; color: #fff; font-weight: 600; }
+        tr:hover td { background-color: #24201c; }
+
+        .map-link { background: #007bff; color: white; padding: 6px 12px; text-decoration: none; border-radius: 6px; font-size: 0.85rem; font-weight: bold; display: inline-block; transition: background 0.2s; }
+        .map-link:hover { background: #0056b3; }
+
+        .badge { padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; cursor: pointer; display: inline-block; text-align: center; min-width: 90px; }
+        .badge-pending { background: rgba(255,204,0,0.15); color: var(--pending-glow); border: 1px solid var(--pending-glow); }
+        .badge-completed { background: rgba(0,255,102,0.15); color: var(--success-glow); border: 1px solid var(--success-glow); }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>⚡ SIA CAFE ☕</h1>
+    <p>Premium Drinks & Automated Live Location Delivery Engine</p>
+    <button class="admin-toggle-btn" id="navBtn" onclick="toggleAdminView()">🔑 Admin Portal</button>
+</header>
+
+<div id="customerView" class="view-section active-view">
+    <div class="container">
+        <div class="menu-section">
+
+            <div class="menu-category">
+                <h3>☕ Premium Hot Chai</h3>
+                <div class="menu-grid">
+                    <div class="menu-card">
+                        <img src="https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=500&q=80" alt="Irani Chai" class="menu-img">
+                        <div class="menu-details">
+                            <h4>Irani Chai Classic</h4>
+                            <p>Rich, slow-brewed caramelized milk layer infusion.</p>
+                            <div class="menu-action">
+                                <span class="item-price">₹20</span>
+                                <button class="btn-add" onclick="addToCart('Irani Chai Classic', 20)">+ Add</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-card">
+                        <img src="https://images.unsplash.com/photo-1563887522-67d920b5a4ce?auto=format&fit=crop&w=500&q=80" alt="Masala Chai" class="menu-img">
+                        <div class="menu-details">
+                            <h4>Masala Spice Decoction</h4>
+                            <p>Crushed ginger, organic cardamom root formulation.</p>
+                            <div class="menu-action">
+                                <span class="item-price">₹25</span>
+                                <button class="btn-add" onclick="addToCart('Masala Spice Decoction', 25)">+ Add</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-card">
+                        <img src="https://images.unsplash.com/photo-1594631252845-29fc4cc8cde9?auto=format&fit=crop&w=500&q=80" alt="Cardamom Tech Chai" class="menu-img">
+                        <div class="menu-details">
+                            <h4>Cardamom Tech Chai</h4>
+                            <p>Aromatic pods crushed to optimize sensory threads.</p>
+                            <div class="menu-action">
+                                <span class="item-price">₹30</span>
+                                <button class="btn-add" onclick="addToCart('Cardamom Tech Chai', 30)">+ Add</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-card">
+                        <img src="https://images.unsplash.com/photo-1513244641979-030f2f39223e?auto=format&fit=crop&w=500&q=80" alt="Ginger Debug Tea" class="menu-img">
+                        <div class="menu-details">
+                            <h4>Ginger Debug Tea</h4>
+                            <p>Sharp spicy profile to clean backend exhaustion.</p>
+                            <div class="menu-action">
+                                <span class="item-price">₹25</span>
+                                <button class="btn-add" onclick="addToCart('Ginger Debug Tea', 25)">+ Add</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-category">
+                <h3>🍦 Cold Premium Sundaes</h3>
+                <div class="menu-grid">
+                    <div class="menu-card">
+                        <img src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=500&q=80" alt="Chocolate Sizzler" class="menu-img">
+                        <div class="menu-details">
+                            <h4>Chocolate Sizzler Brownie</h4>
+                            <p>Fudgy brownie base, molten dark chocolate pour.</p>
+                            <div class="menu-action">
+                                <span class="item-price">₹80</span>
+                                <button class="btn-add" onclick="addToCart('Chocolate Sizzler Brownie', 80)">+ Add</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-card">
+                        <img src="https://images.unsplash.com/photo-1488900128323-21503983a07e?auto=format&fit=crop&w=500&q=80" alt="Mango Scoop" class="menu-img">
+                        <div class="menu-details">
+                            <h4>Mango Byte Scoop</h4>
+                            <p>Velvety natural Alphonso fruit pulp churned freeze.</p>
+                            <div class="menu-action">
+                                <span class="item-price">₹50</span>
+                                <button class="btn-add" onclick="addToCart('Mango Byte Scoop', 50)">+ Add</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-card">
+                        <img src="https://images.unsplash.com/photo-1570197788417-0e82375c9371?auto=format&fit=crop&w=500&q=80" alt="Vanilla Cloud" class="menu-img">
+                        <div class="menu-details">
+                            <h4>Vanilla Cloud Core</h4>
+                            <p>Classic Madagascar vanilla pod extract luxury blend.</p>
+                            <div class="menu-action">
+                                <span class="item-price">₹40</span>
+                                <button class="btn-add" onclick="addToCart('Vanilla Cloud Core', 40)">+ Add</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-card">
+                        <img src="https://images.unsplash.com/photo-1602847213180-50e43a80eeef?auto=format&fit=crop&w=500&q=80" alt="Strawberry Patch" class="menu-img">
+                        <div class="menu-details">
+                            <h4>Strawberry Patch Sundae</h4>
+                            <p>Rich cream whipped with real freeze-dried berries.</p>
+                            <div class="menu-action">
+                                <span class="item-price">₹60</span>
+                                <button class="btn-add" onclick="addToCart('Strawberry Patch Sundae', 60)">+ Add</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-category">
+                <h3>🍹 Fresh Juices & Smooth Thickshakes</h3>
+                <div class="menu-grid">
+                    <div class="menu-card">
+                        <img src="https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?auto=format&fit=crop&w=500&q=80" alt="Mosambi Juice" class="menu-img">
+                        <div class="menu-details">
+                            <h4>Fresh Mosambi Stream</h4>
+                            <p>Fresh sweet lime extraction packed with active Vitamin C.</p>
+                            <div class="menu-action">
+                                <span class="item-price">₹60</span>
+                                <button class="btn-add" onclick="addToCart('Fresh Mosambi Stream', 60)">+ Add</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-card">
+                        <img src="https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=500&q=80" alt="Butterscotch Shake" class="menu-img">
+                        <div class="menu-details">
+                            <h4>Butterscotch Boot Shake</h4>
+                            <p>Creamy praline bits blended with frozen milk fats.</p>
+                            <div class="menu-action">
+                                <span class="item-price">₹70</span>
+                                <button class="btn-add" onclick="addToCart('Butterscotch Boot Shake', 70)">+ Add</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-card">
+                        <img src="https://images.unsplash.com/photo-1579954115545-a95591f28bfc?auto=format&fit=crop&w=500&q=80" alt="Oreo Shake" class="menu-img">
+                        <div class="menu-details">
+                            <h4>Oreo Cache Milkshake</h4>
+                            <p>Crushed dark chocolate biscuits into vanilla thick cream.</p>
+                            <div class="menu-action">
+                                <span class="item-price">₹80</span>
+                                <button class="btn-add" onclick="addToCart('Oreo Cache Milkshake', 80)">+ Add</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="cart-section">
+            <h3 style="color:#fff; margin-top:0;">📋 Your Selection Cart</h3>
+            <div id="cart-items-container"><p style="color:var(--text-muted);">Cart is empty.</p></div>
+            <div class="cart-total"><span>Total Amount:</span><span id="cart-total-price">₹0</span></div>
+
+            <hr style="margin: 2rem 0; border: 0; border-top: 1px solid var(--border-subtle);">
+
+            <form id="orderForm" onsubmit="processOrder(event)">
+                <label>Customer Name</label>
+                <input type="text" id="custName" required placeholder="Enter your full name">
+
+                <label>WhatsApp Number</label>
+                <input type="tel" id="custPhone" required placeholder="Enter active delivery phone">
+
+                <div class="location-box" id="locationStatus">
+                    🛰️ Fetching live GPS hardware coordinates...
+                </div>
+
+                <button type="submit" class="btn-order">🚀 Place Order & Share Live Map</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="adminLoginView" class="view-section">
+    <div class="dashboard-card login-box">
+        <h3>🔐 Operator Control Verification</h3>
+        <label>Operator Username / Phone</label>
+        <input type="text" id="adminUserField" placeholder="Enter 'siva' or '8790869351'">
+
+        <label>Security Password</label>
+        <input type="password" id="adminPassField" placeholder="••••••••">
+
+        <button class="btn-order" style="background: linear-gradient(135deg, #ff9100 0%, #ff6200 100%);" onclick="verifyAdminLogin()">Verify System Access</button>
+        <p id="loginError" style="color: #ff3333; display: none; font-size: 0.95rem; margin-top: 15px; text-align: center; font-weight: bold;">⛔ Security Mismatch! Access Denied.</p>
+    </div>
+</div>
+
+<div id="adminDashboardView" class="view-section">
+    <div class="dashboard-container">
+        <div class="dashboard-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h2 style="margin:0; color:#fff;">📊 Central Orders Matrix Terminal</h2>
+                <button class="btn-add" style="background: linear-gradient(135deg, #ff3333 0%, #cc0000 100%);" onclick="logoutAdmin()">Secure Session Logout</button>
+            </div>
+
+            <div class="metrics-bar">
+                <div class="metric-tile"><h4>Total Streams</h4><p id="mTotal">0</p></div>
+                <div class="metric-tile" style="border-left-color: var(--pending-glow);"><h4>Queue Pending</h4><p id="mPending">0</p></div>
+                <div class="metric-tile" style="border-left-color: var(--success-glow);"><h4>Completed Orders</h4><p id="mCompleted">0</p></div>
+            </div>
+
+            <div class="filter-controls">
+                <label>📌 Filter Database Rows Queue:</label>
+                <select id="statusFilter" onchange="renderLiveDashboardTable()">
+                    <option value="ALL">Decompress All Records</option>
+                    <option value="PENDING">Filter: Pending Rows Only</option>
+                    <option value="COMPLETED">Filter: Completed Rows Only</option>
+                </select>
+            </div>
+            
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Customer Identity</th>
+                            <th>Contact Router</th>
+                            <th>Payload Profile</th>
+                            <th>Gross Billing</th>
+                            <th>Live Geographic Map</th>
+                            <th>Status Vector Control</th>
+                        </tr>
+                    </thead>
+                    <tbody id="liveOrdersTable">
+                        <tr>
+                            <td colspan="6" style="text-align: center; color: var(--text-muted);">Telemetry buffer cleared. Waiting for active rows...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ✅ NEW TARGET SCRIPT API URL CONFIGURATION
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzF_WkAqTRKOBeAt2c6gULaPu37WdXoCDzMqI9WXTBPXD_8tyGfAW5lSknFrL-ML3p7/exec"; 
+    const WHATSAPP_NUMBER = "918688351941"; 
+
+    const AUTH_USER_NAME = "siva";
+    const AUTH_USER_PHONE = "8790869351";
+    const AUTH_USER_PASS = "siva";
+
+    let cart = {};
+    let liveLat = "";
+    let liveLon = "";
+
+    window.onload = function() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    liveLat = position.coords.latitude;
+                    liveLon = position.coords.longitude;
+                    document.getElementById("locationStatus").innerHTML = "✅ Live GPS Location Track Coordinates Locked!";
+                    document.getElementById("locationStatus").style.color = "var(--success-glow)";
+                    document.getElementById("locationStatus").style.background = "rgba(0,255,102,0.08)";
+                    document.getElementById("locationStatus").style.borderColor = "var(--success-glow)";
+                },
+                (error) => {
+                    document.getElementById("locationStatus").innerHTML = "⚠️ Alert: Location access blocked.";
+                    document.getElementById("locationStatus").style.color = "var(--pending-glow)";
+                }
+            );
+        } else {
+            document.getElementById("locationStatus").innerHTML = "❌ Geolocation not supported.";
+            document.getElementById("locationStatus").style.color = "red";
+        }
+    };
+
+    function addToCart(name, price) {
+        if (cart[name]) cart[name].qty += 1;
+        else cart[name] = { price: price, qty: 1 };
+        renderCart();
+    }
+
+    function renderCart() {
+        const container = document.getElementById('cart-items-container');
+        const totalSpan = document.getElementById('cart-total-price');
+        container.innerHTML = '';
+        let total = 0;
+        let keys = Object.keys(cart);
+        if(keys.length === 0) {
+            container.innerHTML = '<p style="color:var(--text-muted);">Cart is empty.</p>';
+            totalSpan.innerText = '₹0';
+            return;
+        }
+        keys.forEach(item => {
+            let itemTotal = cart[item].price * cart[item].qty;
+            total += itemTotal;
+            container.innerHTML += `<div class="cart-item"><span>${item} x ${cart[item].qty}</span><span style="color:var(--accent-brand); font-weight:bold;">₹${itemTotal}</span></div>`;
+        });
+        totalSpan.innerText = '₹' + total;
+    }
+
+    function processOrder(event) {
+        event.preventDefault();
+        const name = document.getElementById('custName').value;
+        const phone = document.getElementById('custPhone').value;
+        if(Object.keys(cart).length === 0) { alert("Cart empty!"); return; }
+
+        let itemsString = "";
+        let total = 0;
+        Object.keys(cart).forEach(item => {
+            itemsString += `${item} (x${cart[item].qty}), `;
+            total += cart[item].price * cart[item].qty;
+        });
+        itemsString = itemsString.slice(0, -2);
+
+        // ✅ FIXED MAP LINK WITH CORRECT TEMPLATE LITERALS
+        let googleMapsLink = (liveLat && liveLon) ? `https://www.google.com/maps?q=${liveLat},${liveLon}` : "Location Not Shared";
+        let defaultStatus = "PENDING";
+
+        // Save locally for UI Buffer persistence
+        saveOrderToLocalAdminSession(name, phone, itemsString, total, googleMapsLink);
+
+        // 🚀 DATABASE TRANSMISSION ROUTE VIA FETCH API
+        fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                name: name, 
+                phone: phone, 
+                items: itemsString, 
+                total: total, 
+                location: googleMapsLink,
+                status: defaultStatus 
+            })
+        });
+
+        // WhatsApp Text Engine Payload Compilation
+        let waMessage = `*⚡ SIA CAFE DELIV_ENGINE ORDER* \n\n`;
+        waMessage += `*Customer:* ${name}\n`;
+        waMessage += `*Mobile Phone:* ${phone}\n\n`;
+        waMessage += `*Items:*\n`;
+        Object.keys(cart).forEach(item => { waMessage += `▪️ ${item} x ${cart[item].qty} \n`; });
+        waMessage += `\n*Total:* ₹${total}\n`;
+        waMessage += `📍 *Location Map:* ${googleMapsLink}\n`;
+        
+        window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(waMessage)}`, '_blank');
+        
+        cart = {}; renderCart(); document.getElementById("orderForm").reset();
+        alert("Order submitted successfully!");
+    }
+
+    function verifyAdminLogin() {
+        const inputIdentity = document.getElementById("adminUserField").value.trim();
+        const inputPassword = document.getElementById("adminPassField").value.trim();
+        if ((inputIdentity === AUTH_USER_NAME || inputIdentity === AUTH_USER_PHONE) && inputPassword === AUTH_USER_PASS) {
+            document.getElementById("loginError").style.display = "none";
+            document.getElementById("adminUserField").value = "";
+            document.getElementById("adminPassField").value = "";
+            switchView("adminDashboardView");
+            renderLiveDashboardTable();
+        } else {
+            document.getElementById("loginError").style.display = "block";
+        }
+    }
+
+    function toggleAdminView() {
+        const btn = document.getElementById("navBtn");
+        if(btn.innerText === "🔑 Admin Portal") {
+            switchView("adminLoginView");
+            btn.innerText = "🛒 Return to Menu";
+        } else {
+            switchView("customerView");
+            btn.innerText = "🔑 Admin Portal";
+        }
+    }
+
+    function switchView(viewId) {
+        document.querySelectorAll('.view-section').forEach(view => view.classList.remove('active-view'));
+        document.getElementById(viewId).classList.add('active-view');
+    }
+
+    function logoutAdmin() {
+        switchView("customerView");
+        document.getElementById("navBtn").innerText = "🔑 Admin Portal";
+    }
+
+    function saveOrderToLocalAdminSession(name, phone, items, total, mapUrl) {
+        let currentOrders = JSON.parse(localStorage.getItem("cafe_orders")) || [];
+        currentOrders.unshift({ id: Date.now(), name, phone, items, total: "₹" + total, mapUrl, status: "PENDING" });
+        localStorage.setItem("cafe_orders", JSON.stringify(currentOrders));
+    }
+
+    function toggleOrderStatus(orderId) {
+        let currentOrders = JSON.parse(localStorage.getItem("cafe_orders")) || [];
+        currentOrders = currentOrders.map(ord => {
+            if(ord.id === orderId) {
+                ord.status = ord.status === "PENDING" ? "COMPLETED" : "PENDING";
+            }
+            return ord;
+        });
+        localStorage.setItem("cafe_orders", JSON.stringify(currentOrders));
+        renderLiveDashboardTable();
+    }
+
+    function renderLiveDashboardTable() {
+        const tableBody = document.getElementById("liveOrdersTable");
+        const filterValue = document.getElementById("statusFilter").value;
+        let currentOrders = JSON.parse(localStorage.getItem("cafe_orders")) || [];
+
+        document.getElementById("mTotal").innerText = currentOrders.length;
+        document.getElementById("mPending").innerText = currentOrders.filter(o => o.status === "PENDING").length;
+        document.getElementById("mCompleted").innerText = currentOrders.filter(o => o.status === "COMPLETED").length;
+
+        tableBody.innerHTML = "";
+        if(currentOrders.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 20px;">Telemetry buffer cleared.</td></tr>`;
+            return;
+        }
+
+        let filteredOrders = currentOrders.filter(ord => {
+            if (filterValue === "ALL") return true;
+            return ord.status === filterValue;
+        });
+        
+        if (filteredOrders.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 20px;">No records match criteria.</td></tr>`;
+            return;
+        }
+
+        filteredOrders.forEach(ord => {
+            let mapBadge = ord.mapUrl !== "Location Not Shared" ? 
+                `<a class="map-link" href="${ord.mapUrl}" target="_blank">🗺️ Launch Route</a>` : `<span>No Map Data</span>`;
+                
+            let statusBadge = ord.status === "PENDING" ? 
+                `<span class="badge badge-pending" onclick="toggleOrderStatus(${ord.id})">⏳ Pending</span>` : 
+                `<span class="badge badge-completed" onclick="toggleOrderStatus(${ord.id})">✔️ Completed</span>`;
+
+            tableBody.innerHTML += `
+                <tr>
+                    <td><b>${ord.name}</b></td>
+                    <td>${ord.phone}</td>
+                    <td style="color: var(--text-muted);">${ord.items}</td>
+                    <td><span style="color:var(--accent-brand); font-weight:bold;">${ord.total}</span></td>
+                    <td>${mapBadge}</td>
+                    <td>${statusBadge}</td>
+                </tr>`;
+        });
+    }
+</script>
+</body>
+</html>
