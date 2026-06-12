@@ -543,13 +543,13 @@
         });
         itemsString = itemsString.slice(0, -2);
 
-        // ✅ FIXED LOCATION STRING INTERPOLATION
+        // ✅ FIXED MAP LINK WITH TEMPLATE LITERALS 
         let googleMapsLink = (liveLat && liveLon) ? `https://www.google.com/maps?q=${liveLat},${liveLon}` : "Location Not Shared";
 
         // Save entry internally into browser local database framework
         saveOrderToLocalAdminSession(name, phone, itemsString, total, googleMapsLink);
 
-        // 1. Silent remote post transfer package directly to tracking spreadsheet
+        // 1. Sending payload package directly to Google Sheet Spreadsheet 
         fetch(GOOGLE_SCRIPT_URL, {
             method: 'POST',
             mode: 'no-cors',
@@ -572,7 +572,6 @@
         alert("Order submitted! Tracking link generated on dashboard console.");
     }
 
-    // ✅ FIXED ADMIN LOGIN & VIEW REDIRECT TERMINAL LOGIC
     function verifyAdminLogin() {
         const inputIdentity = document.getElementById("adminUserField").value.trim();
         const inputPassword = document.getElementById("adminPassField").value.trim();
@@ -582,7 +581,6 @@
             document.getElementById("adminUserField").value = "";
             document.getElementById("adminPassField").value = "";
             
-            // Switch screen dynamically
             switchView("adminDashboardView");
             renderLiveDashboardTable();
         } else {
@@ -634,7 +632,6 @@
         const filterValue = document.getElementById("statusFilter").value;
         let currentOrders = JSON.parse(localStorage.getItem("cafe_orders")) || [];
 
-        // Dynamic Counters Metrics Compilation
         document.getElementById("mTotal").innerText = currentOrders.length;
         document.getElementById("mPending").innerText = currentOrders.filter(o => o.status === "PENDING").length;
         document.getElementById("mCompleted").innerText = currentOrders.filter(o => o.status === "COMPLETED").length;
