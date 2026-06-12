@@ -34,7 +34,7 @@
         }
         header h1 { margin: 0; font-size: 2.8rem; font-weight: 800; letter-spacing: -1px; color: #fff; text-shadow: 0 0 15px rgba(255,122,0,0.4); }
         header p { margin: 8px 0 0; color: var(--text-muted); font-size: 1.1rem; }
-        
+
         .admin-toggle-btn {
             position: absolute;
             right: 20px;
@@ -81,7 +81,7 @@
             border: 1px solid var(--border-subtle);
             box-shadow: 0 15px 35px rgba(0,0,0,0.3);
         }
-        
+
         .menu-category { margin-bottom: 3rem; }
         .menu-category h3 { 
             font-size: 1.4rem; 
@@ -90,7 +90,7 @@
             margin-bottom: 1.5rem;
             color: #fff;
         }
-        
+
         .menu-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -125,7 +125,7 @@
         }
         .menu-details h4 { margin: 0 0 5px 0; font-size: 1.15rem; color: #fff; }
         .menu-details p { margin: 0 0 15px 0; font-size: 0.9rem; color: var(--text-muted); min-height: 32px; }
-        
+
         .menu-action {
             display: flex;
             justify-content: space-between;
@@ -162,7 +162,7 @@
             justify-content: space-between;
             color: #fff;
         }
-        
+
         input, select { 
             width: 100%; 
             padding: 12px; 
@@ -191,7 +191,7 @@
             margin-top: 1rem;
             box-shadow: 0 5px 15px rgba(37,211,102,0.3);
         }
-        
+
         .location-box { 
             background: #1c1916; 
             border: 1px dashed #5e4f43; 
@@ -207,7 +207,7 @@
 
         .login-box { max-width: 440px; margin: 6rem auto; padding: 3rem; border-radius: 20px; background: #1c1916; }
         .login-box h3 { text-align: center; color: #fff; font-size: 1.6rem; margin-top: 0; margin-bottom: 2rem; }
-        
+
         .dashboard-container { max-width: 1300px; margin: 2rem auto; padding: 0 1.5rem; }
         .metrics-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem; }
         .metric-tile { background: #1c1916; padding: 1.5rem; border-radius: 12px; border-left: 4px solid var(--accent-brand); text-align: center; border-top: 1px solid var(--border-subtle); border-right: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); }
@@ -222,10 +222,10 @@
         th, td { padding: 16px; text-align: left; border-bottom: 1px solid var(--border-subtle); font-size: 0.98rem; }
         th { background-color: #2b2520; color: #fff; font-weight: 600; }
         tr:hover td { background-color: #24201c; }
-        
+
         .map-link { background: #007bff; color: white; padding: 6px 12px; text-decoration: none; border-radius: 6px; font-size: 0.85rem; font-weight: bold; display: inline-block; transition: background 0.2s; }
         .map-link:hover { background: #0056b3; }
-        
+
         .badge { padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; cursor: pointer; display: inline-block; text-align: center; min-width: 90px; }
         .badge-pending { background: rgba(255,204,0,0.15); color: var(--pending-glow); border: 1px solid var(--pending-glow); }
         .badge-completed { background: rgba(0,255,102,0.15); color: var(--success-glow); border: 1px solid var(--success-glow); }
@@ -242,7 +242,7 @@
 <div id="customerView" class="view-section active-view">
     <div class="container">
         <div class="menu-section">
-            
+
             <div class="menu-category">
                 <h3>☕ Premium Hot Chai</h3>
                 <div class="menu-grid">
@@ -388,16 +388,16 @@
             <h3 style="color:#fff; margin-top:0;">📋 Your Selection Cart</h3>
             <div id="cart-items-container"><p style="color:var(--text-muted);">Cart is empty.</p></div>
             <div class="cart-total"><span>Total Amount:</span><span id="cart-total-price">₹0</span></div>
-            
+
             <hr style="margin: 2rem 0; border: 0; border-top: 1px solid var(--border-subtle);">
-            
+
             <form id="orderForm" onsubmit="processOrder(event)">
                 <label>Customer Name</label>
                 <input type="text" id="custName" required placeholder="Enter your full name">
-                
+
                 <label>WhatsApp Number</label>
                 <input type="tel" id="custPhone" required placeholder="Enter active delivery phone">
-                
+
                 <div class="location-box" id="locationStatus">
                     🛰️ Fetching live GPS hardware coordinates...
                 </div>
@@ -413,10 +413,10 @@
         <h3>🔐 Operator Control Verification</h3>
         <label>Operator Username / Phone</label>
         <input type="text" id="adminUserField" placeholder="Enter 'siva' or '8790869351'">
-        
+
         <label>Security Password</label>
         <input type="password" id="adminPassField" placeholder="••••••••">
-        
+
         <button class="btn-order" style="background: linear-gradient(135deg, #ff9100 0%, #ff6200 100%);" onclick="verifyAdminLogin()">Verify System Access</button>
         <p id="loginError" style="color: #ff3333; display: none; font-size: 0.95rem; margin-top: 15px; text-align: center; font-weight: bold;">⛔ Security Mismatch! Access Denied.</p>
     </div>
@@ -424,254 +424,4 @@
 
 <div id="adminDashboardView" class="view-section">
     <div class="dashboard-container">
-        <div class="dashboard-card">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                <h2 style="margin:0; color:#fff;">📊 Central Orders Matrix Terminal</h2>
-                <button class="btn-add" style="background: linear-gradient(135deg, #ff3333 0%, #cc0000 100%);" onclick="logoutAdmin()">Secure Session Logout</button>
-            </div>
-
-            <div class="metrics-bar">
-                <div class="metric-tile"><h4>Total Streams</h4><p id="mTotal">0</p></div>
-                <div class="metric-tile" style="border-left-color: var(--pending-glow);"><h4>Queue Pending</h4><p id="mPending">0</p></div>
-                <div class="metric-tile" style="border-left-color: var(--success-glow);"><h4>Completed Orders</h4><p id="mCompleted">0</p></div>
-            </div>
-
-            <div class="filter-controls">
-                <label>📌 Filter Database Rows Queue:</label>
-                <select id="statusFilter" onchange="renderLiveDashboardTable()">
-                    <option value="ALL">Decompress All Records</option>
-                    <option value="PENDING">Filter: Pending Rows Only</option>
-                    <option value="COMPLETED">Filter: Completed Rows Only</option>
-                </select>
-            </div>
-            
-            <div style="overflow-x: auto;">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Customer Identity</th>
-                            <th>Contact Router</th>
-                            <th>Payload Profile</th>
-                            <th>Gross Billing</th>
-                            <th>Live Geographic Map</th>
-                            <th>Status Vector Control</th>
-                        </tr>
-                    </thead>
-                    <tbody id="liveOrdersTable">
-                        <tr>
-                            <td colspan="6" style="text-align: center; color: var(--text-muted);">Telemetry buffer cleared. Waiting for active rows...</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby5HfIbppwbL5hXLvpkp2Xk017iFJzs9sGpQGLA1ONRSxPoMXKtB2Ri9GOTq0F4gesj/exec"; 
-    const WHATSAPP_NUMBER = "918688351941"; 
-
-    // 🔒 SECURITY REGISTRY MASTER DATA
-    const AUTH_USER_NAME = "siva";
-    const AUTH_USER_PHONE = "8790869351";
-    const AUTH_USER_PASS = "siva";
-
-    let cart = {};
-    let liveLat = "";
-    let liveLon = "";
-
-    // REAL-TIME GPS COORDINATES ACQUISITION SENSOR
-    window.onload = function() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    liveLat = position.coords.latitude;
-                    liveLon = position.coords.longitude;
-                    document.getElementById("locationStatus").innerHTML = "✅ Live GPS Location Track Coordinates Locked!";
-                    document.getElementById("locationStatus").style.color = "var(--success-glow)";
-                    document.getElementById("locationStatus").style.background = "rgba(0,255,102,0.08)";
-                    document.getElementById("locationStatus").style.borderColor = "var(--success-glow)";
-                },
-                (error) => {
-                    document.getElementById("locationStatus").innerHTML = "⚠️ Alert: Location access blocked. System using custom address typing.";
-                    document.getElementById("locationStatus").style.color = "var(--pending-glow)";
-                }
-            );
-        } else {
-            document.getElementById("locationStatus").innerHTML = "❌ Geolocation is not supported by this browser.";
-            document.getElementById("locationStatus").style.color = "red";
-        }
-    };
-
-    function addToCart(name, price) {
-        if (cart[name]) cart[name].qty += 1;
-        else cart[name] = { price: price, qty: 1 };
-        renderCart();
-    }
-
-    function renderCart() {
-        const container = document.getElementById('cart-items-container');
-        const totalSpan = document.getElementById('cart-total-price');
-        container.innerHTML = '';
-        let total = 0;
-        let keys = Object.keys(cart);
-        if(keys.length === 0) {
-            container.innerHTML = '<p style="color:var(--text-muted);">Cart is empty.</p>';
-            totalSpan.innerText = '₹0';
-            return;
-        }
-        keys.forEach(item => {
-            let itemTotal = cart[item].price * cart[item].qty;
-            total += itemTotal;
-            container.innerHTML += `<div class="cart-item"><span>${item} x ${cart[item].qty}</span><span style="color:var(--accent-brand); font-weight:bold;">₹${itemTotal}</span></div>`;
-        });
-        totalSpan.innerText = '₹' + total;
-    }
-
-    function processOrder(event) {
-        event.preventDefault();
-        const name = document.getElementById('custName').value;
-        const phone = document.getElementById('custPhone').value;
-        if(Object.keys(cart).length === 0) { alert("Cart empty! Select items first."); return; }
-
-        let itemsString = "";
-        let total = 0;
-        Object.keys(cart).forEach(item => {
-            itemsString += `${item} (x${cart[item].qty}), `;
-            total += cart[item].price * cart[item].qty;
-        });
-        itemsString = itemsString.slice(0, -2);
-
-        // ✅ FIXED MAP LINK WITH TEMPLATE LITERALS 
-        let googleMapsLink = (liveLat && liveLon) ? `https://www.google.com/maps?q=${liveLat},${liveLon}` : "Location Not Shared";
-
-        // Save entry internally into browser local database framework
-        saveOrderToLocalAdminSession(name, phone, itemsString, total, googleMapsLink);
-
-        // 1. Sending payload package directly to Google Sheet Spreadsheet 
-        fetch(GOOGLE_SCRIPT_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name: name, phone: phone, items: itemsString, total: total, location: googleMapsLink })
-        });
-
-        // 2. Generate WhatsApp Text with Correct Live Tracking Map URL
-        let waMessage = `*⚡ SIA CAFE DELIV_ENGINE ORDER* \n\n`;
-        waMessage += `*Customer:* ${name}\n`;
-        waMessage += `*Mobile Phone:* ${phone}\n\n`;
-        waMessage += `*Items Payload Structure:*\n`;
-        Object.keys(cart).forEach(item => { waMessage += `▪️ ${item} x ${cart[item].qty} \n`; });
-        waMessage += `\n*Billing Total:* ₹${total}\n`;
-        if(liveLat) waMessage += `📍 *Live Geographic Location Map:* ${googleMapsLink}\n`;
-        
-        window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(waMessage)}`, '_blank');
-        
-        cart = {}; renderCart(); document.getElementById("orderForm").reset();
-        alert("Order submitted! Tracking link generated on dashboard console.");
-    }
-
-    function verifyAdminLogin() {
-        const inputIdentity = document.getElementById("adminUserField").value.trim();
-        const inputPassword = document.getElementById("adminPassField").value.trim();
-        
-        if ((inputIdentity === AUTH_USER_NAME || inputIdentity === AUTH_USER_PHONE) && inputPassword === AUTH_USER_PASS) {
-            document.getElementById("loginError").style.display = "none";
-            document.getElementById("adminUserField").value = "";
-            document.getElementById("adminPassField").value = "";
-            
-            switchView("adminDashboardView");
-            renderLiveDashboardTable();
-        } else {
-            document.getElementById("loginError").style.display = "block";
-        }
-    }
-
-    function toggleAdminView() {
-        const btn = document.getElementById("navBtn");
-        if(btn.innerText === "🔑 Admin Portal") {
-            switchView("adminLoginView");
-            btn.innerText = "🛒 Return to Menu";
-        } else {
-            switchView("customerView");
-            btn.innerText = "🔑 Admin Portal";
-        }
-    }
-
-    function switchView(viewId) {
-        document.querySelectorAll('.view-section').forEach(view => view.classList.remove('active-view'));
-        document.getElementById(viewId).classList.add('active-view');
-    }
-
-    function logoutAdmin() {
-        switchView("customerView");
-        document.getElementById("navBtn").innerText = "🔑 Admin Portal";
-    }
-
-    function saveOrderToLocalAdminSession(name, phone, items, total, mapUrl) {
-        let currentOrders = JSON.parse(localStorage.getItem("cafe_orders")) || [];
-        currentOrders.unshift({ id: Date.now(), name, phone, items, total: "₹" + total, mapUrl, status: "PENDING" });
-        localStorage.setItem("cafe_orders", JSON.stringify(currentOrders));
-    }
-
-    function toggleOrderStatus(orderId) {
-        let currentOrders = JSON.parse(localStorage.getItem("cafe_orders")) || [];
-        currentOrders = currentOrders.map(ord => {
-            if(ord.id === orderId) {
-                ord.status = ord.status === "PENDING" ? "COMPLETED" : "PENDING";
-            }
-            return ord;
-        });
-        localStorage.setItem("cafe_orders", JSON.stringify(currentOrders));
-        renderLiveDashboardTable();
-    }
-
-    function renderLiveDashboardTable() {
-        const tableBody = document.getElementById("liveOrdersTable");
-        const filterValue = document.getElementById("statusFilter").value;
-        let currentOrders = JSON.parse(localStorage.getItem("cafe_orders")) || [];
-
-        document.getElementById("mTotal").innerText = currentOrders.length;
-        document.getElementById("mPending").innerText = currentOrders.filter(o => o.status === "PENDING").length;
-        document.getElementById("mCompleted").innerText = currentOrders.filter(o => o.status === "COMPLETED").length;
-
-        tableBody.innerHTML = "";
-        
-        if(currentOrders.length === 0) {
-            tableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 20px;">Telemetry buffer cleared. Waiting for active rows...</td></tr>`;
-            return;
-        }
-
-        let filteredOrders = currentOrders.filter(ord => {
-            if (filterValue === "ALL") return true;
-            return ord.status === filterValue;
-        });
-        
-        if (filteredOrders.length === 0) {
-            tableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 20px;">No records match selected query criteria.</td></tr>`;
-            return;
-        }
-
-        filteredOrders.forEach(ord => {
-            let mapBadge = ord.mapUrl !== "Location Not Shared" ? 
-                `<a class="map-link" href="${ord.mapUrl}" target="_blank">🗺️ Launch Route</a>` : `<span>No Map Data</span>`;
-                
-            let statusBadge = ord.status === "PENDING" ? 
-                `<span class="badge badge-pending" onclick="toggleOrderStatus(${ord.id})">⏳ Pending</span>` : 
-                `<span class="badge badge-completed" onclick="toggleOrderStatus(${ord.id})">✔️ Completed</span>`;
-
-            tableBody.innerHTML += `
-                <tr>
-                    <td><b>${ord.name}</b></td>
-                    <td>${ord.phone}</td>
-                    <td style="color: var(--text-muted);">${ord.items}</td>
-                    <td><span style="color:var(--accent-brand); font-weight:bold;">${ord.total}</span></td>
-                    <td>${mapBadge}</td>
-                    <td>${statusBadge}</td>
-                </tr>`;
-        });
-    }
-</script>
-</body>
-</html>
+     
